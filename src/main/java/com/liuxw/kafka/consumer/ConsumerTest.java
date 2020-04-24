@@ -22,7 +22,6 @@ public class ConsumerTest {
         properties.put("bootstrap.servers","192.168.0.33:9092");
         properties.put("group.id",groupID);
         properties.put("enable.auto.commit","true");
-        properties.put("auto.commit.interval.ms","true");
         properties.put("auto.commit.interval.ms","1000");
         // 从最早的消息开始读取
         properties.put("auto.offset.reset","earliest");

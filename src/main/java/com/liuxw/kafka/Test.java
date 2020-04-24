@@ -1,7 +1,13 @@
 package com.liuxw.kafka;
 
+import net.jpountz.xxhash.StreamingXXHash32;
+import net.jpountz.xxhash.XXHashFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Author  XiaoWen
@@ -10,7 +16,28 @@ import org.apache.logging.log4j.Logger;
  */
 public class Test {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        XXHashFactory factory = XXHashFactory.fastestInstance();
+
+        byte[] data = "hello,world".getBytes("UTF-8");
+        ByteArrayInputStream in = new ByteArrayInputStream(data);
+
+        int seed = 0; // used to initialize the hash value, use whatever
+        // value you want, but always the same
+        StreamingXXHash32 hash32 = factory.newStreamingHash32(seed);
+        byte[] buf = new byte[8]; // for real-world usage, use a larger buffer, like 8192 bytes
+        for (;;) {
+            int read = in.read(buf);
+            if (read == -1) {
+                break;
+            }
+            hash32.update(buf, 0, read);
+        }
+        int hash = hash32.getValue();
+        System.out.println(hash);
+    }
+
+    public static void mainxx(String[] args) {
         Logger logger = LogManager.getLogger(Test.class);
         logger.debug("Debug Level");
         logger.info("Info Level");
