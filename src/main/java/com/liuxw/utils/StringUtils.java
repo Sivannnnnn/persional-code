@@ -21,7 +21,7 @@ public class StringUtils {
      * @return
      * @throws IOException
      */
-    public int xxHash32(String text,int seed) throws IOException {
+    public long xxHash32(String text,int seed) throws IOException {
 
         XXHashFactory factory = XXHashFactory.fastestInstance();
 
@@ -42,6 +42,19 @@ public class StringUtils {
             hash32.update(buf, 0, read);
         }
         int hash = hash32.getValue();
-        return hash;
+        return intUnsigned(hash);
+    }
+
+    /**
+     * 有符号int转无符号uint32, 用java的long表示
+     * @param v
+     * @return
+     */
+    public static long intUnsigned(int v) {
+        long v1 = (byte) v & 255L;
+        long v2 = (byte) (v >> 8) & 255L;
+        long v3 = (byte) (v >> 16) & 255L;
+        long v4 = (byte) (v >> 24) & 255L;
+        return v1 | v2 << 8 | v3 << 16 | v4 << 24;
     }
 }

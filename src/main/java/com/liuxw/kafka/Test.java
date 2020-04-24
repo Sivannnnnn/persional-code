@@ -1,5 +1,6 @@
 package com.liuxw.kafka;
 
+import com.liuxw.utils.StringUtils;
 import net.jpountz.xxhash.StreamingXXHash32;
 import net.jpountz.xxhash.XXHashFactory;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +20,7 @@ public class Test {
     public static void main(String[] args) throws IOException {
         XXHashFactory factory = XXHashFactory.fastestInstance();
 
-        byte[] data = "hello,world".getBytes("UTF-8");
+        byte[] data = "54065-0".getBytes("UTF-8");
         ByteArrayInputStream in = new ByteArrayInputStream(data);
 
         int seed = 0; // used to initialize the hash value, use whatever
@@ -34,7 +35,7 @@ public class Test {
             hash32.update(buf, 0, read);
         }
         int hash = hash32.getValue();
-        System.out.println(hash);
+        System.out.println(StringUtils.intUnsigned(hash));
     }
 
     public static void mainxx(String[] args) {
